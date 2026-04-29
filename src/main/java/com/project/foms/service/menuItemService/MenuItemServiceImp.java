@@ -14,15 +14,15 @@ import com.project.foms.entity.MenuItem;
 import com.project.foms.repository.MenuItemRepository;
 
 @Service
-public class MenuItemServiceImp implements MenuItemService{
-    
+public class MenuItemServiceImp implements MenuItemService {
+
     @Autowired
     private MenuItemRepository repo;
 
     @Override
-    public MenuItemResponseDto createMenuItem(MenuItemRequestDto m){
+    public MenuItemResponseDto createMenuItem(MenuItemRequestDto m) {
         MenuItem menuItem = new MenuItem();
-        menuItem.setItemName(m.getItmeName());
+        menuItem.setItemName(m.getItemName());
         menuItem.setPrice(m.getPrice());
         menuItem.setAvailability(m.isAvailability());
         MenuItem saved = repo.save(menuItem);
@@ -36,10 +36,10 @@ public class MenuItemServiceImp implements MenuItemService{
     }
 
     @Override
-    public List<MenuItemResponseDto> getAllMenuItems(){
+    public List<MenuItemResponseDto> getAllMenuItems() {
         List<MenuItemResponseDto> responseList = new ArrayList<>();
         List<MenuItem> menuItems = repo.findAll();
-        for(MenuItem m: menuItems){
+        for (MenuItem m : menuItems) {
             MenuItemResponseDto response = new MenuItemResponseDto();
             response.setItemId(m.getItemId());
             response.setItmeName(m.getItemName());
@@ -51,8 +51,9 @@ public class MenuItemServiceImp implements MenuItemService{
     }
 
     @Override
-    public MenuItemResponseDto getMenuItemsById(int itemId){
-        MenuItem menuItem = repo.findById(itemId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Menu Item is not found"));
+    public MenuItemResponseDto getMenuItemsById(int itemId) {
+        MenuItem menuItem = repo.findById(itemId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Menu Item is not found"));
         MenuItemResponseDto response = new MenuItemResponseDto();
         response.setItemId(menuItem.getItemId());
         response.setItmeName(menuItem.getItemName());
@@ -62,9 +63,10 @@ public class MenuItemServiceImp implements MenuItemService{
     }
 
     @Override
-    public MenuItemResponseDto updateMenuItem(int itemId,MenuItemRequestDto m){
-        MenuItem existing = repo.findById(itemId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Item not found"));
-        existing.setItemName(m.getItmeName());
+    public MenuItemResponseDto updateMenuItem(int itemId, MenuItemRequestDto m) {
+        MenuItem existing = repo.findById(itemId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found"));
+        existing.setItemName(m.getItemName());
         existing.setPrice(m.getPrice());
         existing.setAvailability(m.isAvailability());
         MenuItem saved = repo.save(existing);
@@ -78,7 +80,38 @@ public class MenuItemServiceImp implements MenuItemService{
     }
 
     @Override
-    public void deleteMenuItem(int itemId){
+    public void deleteMenuItem(int itemId) {
         repo.deleteById(itemId);
+    }
+
+    @Override
+    public List<MenuItemResponseDto> findItemGreaterThan(int price) {
+        List<MenuItemResponseDto> responseList = new ArrayList<>();
+        List<MenuItem> menuItems = repo.findByPriceGreaterThan(price);
+
+        if(menuItems.isEmpty()){
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND,"No item is greater than this price");
+        }
+
+        for(MenuItem m:menuItems){
+            MenuItemResponseDto response = new MenuItemResponseDto();
+            response.setItemId(m.getItemId());
+            response.setItmeName(m.getItemName());
+            response.setPrice(m.getPrice());
+            response.setAvailability(m.isAvailability());
+            responseList.add(response);
+        }
+        return responseList;
+    }
+
+    public MenuItemResponseDto getByItemName(String itemName){
+        MenuItem menuItem = repo.findByItemName(itemName).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no such item available."));;
+        MenuItemResponseDto response = new MenuItemResponseDto();
+        response.setItemId(menuItem.getItemId());
+        response.setItmeName(menuItem.getItemName());
+        response.setPrice(menuItem.getPrice());
+        response.setAvailability(menuItem.isAvailability());
+        return response;
     }
 }

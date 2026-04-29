@@ -12,4 +12,6 @@ public interface MenuItemService {
     public MenuItemResponseDto getMenuItemsById(int itemId);
     public MenuItemResponseDto updateMenuItem(int itemId,MenuItemRequestDto m);
     public void deleteMenuItem(int itemId);
+    public List<MenuItemResponseDto> findItemGreaterThan(int price);
+    public MenuItemResponseDto getByItemName(String itemName);
 }

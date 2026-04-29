@@ -19,7 +19,7 @@ public class Resturant {
 
     private String location;
 
-    @OneToMany(mappedBy = "resturent")
+    @OneToMany(mappedBy = "resturant")
     private List<MenuItem> menuItems;
 
     public int getResturantId() {

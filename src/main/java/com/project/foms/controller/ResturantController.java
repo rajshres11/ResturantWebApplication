@@ -42,7 +42,7 @@ public class ResturantController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    @GetMapping("/get/{resturantId")
+    @GetMapping("/get/{resturantId}")
     public ResponseEntity<ApiResponse<ResturantResponseDto>> getResturantById(@PathVariable int resturantId){
         ResturantResponseDto resturant = service.getResturantById(resturantId);
         ApiResponse<ResturantResponseDto> response = new ApiResponse<ResturantResponseDto>(HttpStatus.OK.value(),"Resturant fetched Sussesfully", resturant);
@@ -59,8 +59,8 @@ public class ResturantController {
     @DeleteMapping("/delete/{resturantId}")
     public ResponseEntity<ApiResponse<String>> deleteResturant(@PathVariable int resturantId){
         service.deleteResturant(resturantId);
-        ApiResponse<String> response = new ApiResponse<String>(HttpStatus.NO_CONTENT.value(),"Resturant vanished", null);
-        return new ResponseEntity<>(response,HttpStatus.NO_CONTENT);
+        ApiResponse<String> response = new ApiResponse<String>(HttpStatus.OK.value(),"Resturant vanished", null);
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     @GetMapping("/get/location/{location}")

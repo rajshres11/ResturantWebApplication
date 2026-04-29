@@ -28,7 +28,7 @@ public class ResturantServiceImp implements ResturantService{
     @Override
     public ResturantResponseDto createResturant(ResturantRequestDto r){
         Resturant resturant = new Resturant();
-        resturant.setResturantName(r.getResturnatName());
+        resturant.setResturantName(r.getResturantName());
         resturant.setLocation(r.getLocation());
         Resturant saved = repo.save(resturant);
 
@@ -69,7 +69,7 @@ public class ResturantServiceImp implements ResturantService{
     public ResturantResponseDto updateResturant(int resturantId,ResturantRequestDto r){
         Resturant existing = repo.findById(resturantId)
         .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"No resturant found"));
-        existing.setResturantName(r.getResturnatName());
+        existing.setResturantName(r.getResturantName());
         existing.setLocation(r.getLocation());
         Resturant saved = repo.save(existing);
 
@@ -116,13 +116,15 @@ public class ResturantServiceImp implements ResturantService{
         Resturant r = repo.findById(resturantId).
         orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"No resturant found"));
         List<MenuItem> menuItems = r.getMenuItems();
-        for(MenuItem m : menuItems){
+        if(menuItems != null){
+            for(MenuItem m : menuItems){
             MenuItemResponseDto response = new MenuItemResponseDto();
             response.setItemId(m.getItemId());
             response.setItmeName(m.getItemName());
             response.setPrice(m.getPrice());
             response.setAvailability(m.isAvailability());
             responseList.add(response);
+        }
         }
         return responseList;
     }

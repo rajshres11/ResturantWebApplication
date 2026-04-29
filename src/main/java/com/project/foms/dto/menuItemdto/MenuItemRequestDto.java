@@ -2,18 +2,18 @@ package com.project.foms.dto.menuItemdto;
 
 public class MenuItemRequestDto {
     
-    private String itmeName;
+    private String itemName;
 
     private int price;
 
     private boolean availability;
 
-    public String getItmeName() {
-        return itmeName;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setItmeName(String itmeName) {
-        this.itmeName = itmeName;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
     public int getPrice() {

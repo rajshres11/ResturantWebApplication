@@ -85,7 +85,7 @@ public class CustomerServiceImp implements CustomerService {
     @Override
     public CustomerResponseDto getCustomerByContact(int contact) {
         CustomerResponseDto response = new CustomerResponseDto();
-        Customer c = repo.findByContact(contact);
+        Customer c = repo.findByContact(contact).orElseThrow(()-> new NoCustomerException());;
         response.setCustomerId(c.getCustomerId());
         response.setCustomerName(c.getCustomerName());
         response.setEmail(c.getEmail());

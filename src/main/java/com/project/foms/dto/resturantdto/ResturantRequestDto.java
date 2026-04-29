@@ -2,18 +2,18 @@ package com.project.foms.dto.resturantdto;
 
 public class ResturantRequestDto {
     
-    private String resturnatName;
+    private String resturantName;
 
     private String location;
 
     // Getter and Setter
 
-    public String getResturnatName() {
-        return resturnatName;
+    public String getResturantName() {
+        return resturantName;
     }
 
-    public void setResturnatName(String resturnatName) {
-        this.resturnatName = resturnatName;
+    public void setResturantName(String resturantName) {
+        this.resturantName = resturantName;
     }
 
     public String getLocation() {

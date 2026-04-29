@@ -56,13 +56,20 @@ public class CustomerController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
+    // @DeleteMapping("/delete/{customerId}")
+    // public ResponseEntity<ApiResponse<String>> deleteCustomer(@PathVariable int customerId){
+    //     service.deleteCustomer(customerId);
+    //     return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(),"Customer deleted sussesfully", null),HttpStatus.OK);
+    // }
+
+    // If we want to give NO_CONTENT there is no body with this.
     @DeleteMapping("/delete/{customerId}")
-    public ResponseEntity<ApiResponse<String>> deleteCustomer(@PathVariable int customerId){
+    public ResponseEntity<Void> deleteCustomer(@PathVariable int customerId){
         service.deleteCustomer(customerId);
-        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(),"Customer deleted sussesfully", null),HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/bycontact/{conctact}")
+    @GetMapping("/bycontact/{contact}")
     public ResponseEntity<ApiResponse<CustomerResponseDto>> getByContact(@PathVariable int contact){
         CustomerResponseDto customer = service.getCustomerByContact(contact);
         ApiResponse<CustomerResponseDto> response = new ApiResponse<CustomerResponseDto>(HttpStatus.OK.value(),"Customer fetched", customer);

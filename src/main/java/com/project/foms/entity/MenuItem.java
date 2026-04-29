@@ -21,7 +21,7 @@ public class MenuItem {
     private boolean availability;
 
     @ManyToOne
-    @JoinColumn(name = "itemId")
+    @JoinColumn(name = "resturantId")
     private Resturant resturant;
 
     public int getItemId() {
