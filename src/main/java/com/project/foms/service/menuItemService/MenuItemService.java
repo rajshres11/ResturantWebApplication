@@ -9,4 +9,7 @@ public interface MenuItemService {
     
     public MenuItemResponseDto createMenuItem(MenuItemRequestDto m);
     public List<MenuItemResponseDto> getAllMenuItems();
+    public MenuItemResponseDto getMenuItemsById(int itemId);
+    public MenuItemResponseDto updateMenuItem(int itemId,MenuItemRequestDto m);
+    public void deleteMenuItem(int itemId);
 }
