@@ -11,4 +11,6 @@ import com.project.foms.entity.Customer;
 public interface CustomerRepository extends JpaRepository<Customer,Integer>{
     
     Optional<Customer> findByContact(int contact);
+    boolean existsByEmail(String email);
+    boolean existsByContact(String contact);
 }

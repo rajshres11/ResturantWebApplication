@@ -3,7 +3,9 @@ package com.project.foms.service.customerService;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.project.foms.dto.customerdto.CustomerRequestDto;
 import com.project.foms.dto.customerdto.CustomerResponseDto;
@@ -24,8 +26,16 @@ public class CustomerServiceImp implements CustomerService {
     public CustomerResponseDto createCustomer(CustomerRequestDto c) {
         Customer customer = new Customer();
         customer.setCustomerName(c.getCustomerName());
-        customer.setEmail(c.getEmail());
-        customer.setContact(c.getContact());
+        if(repo.existsByEmail(c.getEmail())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Email already exists");
+        }else{
+            customer.setEmail(c.getEmail());
+        }
+        if(repo.existsByContact(c.getContact())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"PhoneNumber already exists");
+        }else{
+            customer.setContact(c.getContact());
+        }
         customer.setAddress(c.getAddress());
         // Also implement this method in update
         Customer saved = repo.save(customer);

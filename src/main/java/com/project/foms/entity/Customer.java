@@ -2,6 +2,7 @@ package com.project.foms.entity;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,9 +18,11 @@ public class Customer {
 
     private String customerName;
 
+    @Column(unique = true)
     private String email;
 
-    private int contact;
+    @Column(unique = true)
+    private String contact;
 
     private String address;
 
@@ -53,11 +56,11 @@ public class Customer {
         this.email = email;
     }
 
-    public int getContact() {
+    public String getContact() {
         return contact;
     }
 
-    public void setContact(int contact) {
+    public void setContact(String contact) {
         this.contact = contact;
     }
 

@@ -8,7 +8,7 @@ public class CustomerResponseDto {
 
     private String email;
 
-    private int contact;
+    private String contact;
 
     private String address;
 
@@ -38,11 +38,11 @@ public class CustomerResponseDto {
         this.email = email;
     }
 
-    public int getContact() {
+    public String getContact() {
         return contact;
     }
 
-    public void setContact(int contact) {
+    public void setContact(String contact) {
         this.contact = contact;
     }
 
