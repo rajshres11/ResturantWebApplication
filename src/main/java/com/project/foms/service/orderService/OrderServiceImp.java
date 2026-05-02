@@ -39,36 +39,50 @@ public class OrderServiceImp implements OrderService {
     @Transactional
     public OrderResponseDto placeOrder(OrderRequestDto o) {
         Order order = new Order();
+
+        // Checking customer is present or not.
         Customer c = repoc.findById(o.getCustomerId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "There is no such customer"));
         order.setCustomer(c);
 
+        // Checking items list is empty or not.
         if (o.getItems().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Need to add item");
         }
 
+        // Every order have list of orderItems.
         List<OrderItem> orderItems = new ArrayList<>();
+
+        // Total amount of all orderItems.
         int totalAmount = 0;
+
+        // Fetching list of orderItems and adding to orderItem as well as adding those items in orderItems List.
         for (OrderItemRequestDto orderItemRequestDto : o.getItems()) {
 
+            // Checking enter menu itemId is exist or not.
             MenuItem menuItem = repom.findById(orderItemRequestDto.getItemId())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No such item"));
 
+            // Checking item is available or not.
             if (!menuItem.isAvailability()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Item is not avaialable");
             }
 
             OrderItem orderItem = new OrderItem();
             orderItem.setMenuItem(menuItem);
+
+            // Checking orderItem have atleast one in quantity.
             if (orderItemRequestDto.getQuantity() < 1) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Quantity must be atleat 1");
             }
             orderItem.setQuantity(orderItemRequestDto.getQuantity());
             orderItem.setOrder(order);
 
+            // Total per orderItem.
             int subtotal = menuItem.getPrice() * orderItemRequestDto.getQuantity();
             orderItem.setSubTotal(subtotal);
 
+            // Total of all orderItem total.
             totalAmount += subtotal;
             orderItems.add(orderItem);
         }
