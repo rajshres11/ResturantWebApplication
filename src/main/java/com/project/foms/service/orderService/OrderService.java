@@ -10,4 +10,8 @@ public interface OrderService {
     public OrderResponseDto placeOrder(OrderRequestDto o);
 
     public List<OrderResponseDto> getAllOrders();
+
+    public OrderResponseDto getById(int orderId);
+
+    public List<OrderResponseDto> getAllOrderByCustomer(int customerId);
 }

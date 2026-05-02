@@ -56,7 +56,8 @@ public class OrderServiceImp implements OrderService {
         // Total amount of all orderItems.
         int totalAmount = 0;
 
-        // Fetching list of orderItems and adding to orderItem as well as adding those items in orderItems List.
+        // Fetching list of orderItems and adding to orderItem as well as adding those
+        // items in orderItems List.
         for (OrderItemRequestDto orderItemRequestDto : o.getItems()) {
 
             // Checking enter menu itemId is exist or not.
@@ -117,6 +118,60 @@ public class OrderServiceImp implements OrderService {
     @Override
     public List<OrderResponseDto> getAllOrders() {
         List<Order> orders = repo.findAll();
+        List<OrderResponseDto> responseList = new ArrayList<>();
+        for (Order o : orders) {
+            OrderResponseDto response = new OrderResponseDto();
+            response.setOrderId(o.getOrderId());
+            response.setOrderStatus(o.getOrderStatus());
+            response.setTotalAmount(o.getTotalAmount());
+            List<OrderItem> orderItemList = o.getOrderItems();
+            List<OrderItemResponseDto> orderItemResponse = new ArrayList<>();
+            for (OrderItem oi : orderItemList) {
+                OrderItemResponseDto oiResponse = new OrderItemResponseDto();
+                oiResponse.setOrderItemId(oi.getOrderItemId());
+                oiResponse.setItemName(oi.getMenuItem().getItemName());
+                oiResponse.setPrice(oi.getMenuItem().getPrice());
+                oiResponse.setQuantity(oi.getQuantity());
+                oiResponse.setSubTotal(oi.getSubTotal());
+                orderItemResponse.add(oiResponse);
+            }
+            response.setItems(orderItemResponse);
+            responseList.add(response);
+        }
+        return responseList;
+    }
+
+    @Override
+    public OrderResponseDto getById(int orderId) {
+        Order order = repo.findById(orderId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order is not available."));
+        OrderResponseDto response = new OrderResponseDto();
+        response.setOrderId(order.getOrderId());
+        response.setOrderStatus(order.getOrderStatus());
+        response.setTotalAmount(order.getTotalAmount());
+        List<OrderItemResponseDto> orderItemsResponse = new ArrayList<>();
+        List<OrderItem> orderItems = order.getOrderItems();
+        for (OrderItem oi : orderItems) {
+            OrderItemResponseDto oiResponse = new OrderItemResponseDto();
+            oiResponse.setOrderItemId(oi.getOrderItemId());
+            oiResponse.setItemName(oi.getMenuItem().getItemName());
+            oiResponse.setPrice(oi.getMenuItem().getPrice());
+            oiResponse.setQuantity(oi.getQuantity());
+            oiResponse.setSubTotal(oi.getSubTotal());
+            orderItemsResponse.add(oiResponse);
+        }
+        response.setItems(orderItemsResponse);
+        return response;
+    }
+
+    @Override
+    public List<OrderResponseDto> getAllOrderByCustomer(int customerId) {
+
+        List<Order> orders = repo.findByCustomerId(customerId);
+        // Unnecessary but for extra checks.
+        if (orders.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.OK, "No items in order");
+        }
         List<OrderResponseDto> responseList = new ArrayList<>();
         for (Order o : orders) {
             OrderResponseDto response = new OrderResponseDto();

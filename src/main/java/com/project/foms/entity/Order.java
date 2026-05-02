@@ -16,8 +16,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
+// I am giving table annotation because order is predefined word in sql so we
+// cant use it.
+@Table(name = "orders")
 public class Order {
 
     @Id
