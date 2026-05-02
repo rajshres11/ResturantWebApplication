@@ -74,14 +74,16 @@ public class MenuItemController {
 
     @GetMapping("/get/price")
     // GET /menuitems/get/price?price=200
-    public ResponseEntity<ApiResponse<List<MenuItemResponseDto>>> findItemGreaterThan(@RequestParam int price){
+    public ResponseEntity<ApiResponse<List<MenuItemResponseDto>>> findItemGreaterThan(@RequestParam int price) {
         List<MenuItemResponseDto> menuItems = service.findItemGreaterThan(price);
-        return new ResponseEntity<>(new ApiResponse<List<MenuItemResponseDto>>(HttpStatus.OK.value(),"MenuItem list greater than price",menuItems),HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse<List<MenuItemResponseDto>>(HttpStatus.OK.value(),
+                "MenuItem list greater than price", menuItems), HttpStatus.OK);
     }
 
     @GetMapping("/get/name/{itemName}")
-    public ResponseEntity<ApiResponse<MenuItemResponseDto>> getMenuItemByName(@PathVariable String itemName){
+    public ResponseEntity<ApiResponse<MenuItemResponseDto>> getMenuItemByName(@PathVariable String itemName) {
         MenuItemResponseDto menuItem = service.getByItemName(itemName);
-        return new ResponseEntity<>(new ApiResponse<MenuItemResponseDto>(HttpStatus.OK.value(),"MenuItem list greater than price",menuItem),HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse<MenuItemResponseDto>(HttpStatus.OK.value(),
+                "MenuItem list greater than price", menuItem), HttpStatus.OK);
     }
 }
