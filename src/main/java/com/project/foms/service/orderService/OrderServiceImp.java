@@ -1,16 +1,101 @@
 package com.project.foms.service.orderService;
 
-import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.project.foms.dto.orderItemdto.OrderItemRequestDto;
+import com.project.foms.dto.orderItemdto.OrderItemResponseDto;
+import com.project.foms.dto.orderdto.OrderRequestDto;
+import com.project.foms.dto.orderdto.OrderResponseDto;
+import com.project.foms.entity.Customer;
+import com.project.foms.entity.MenuItem;
+import com.project.foms.entity.Order;
+import com.project.foms.entity.OrderItem;
+import com.project.foms.enums.OrderStatus;
+import com.project.foms.repository.CustomerRepository;
+import com.project.foms.repository.MenuItemRepository;
 import com.project.foms.repository.OrderRepository;
 
 @Service
-public class OrderServiceImp implements OrderService{
-    
+public class OrderServiceImp implements OrderService {
+
     private final OrderRepository repo;
-    public OrderServiceImp (OrderRepository repo){
-        this.repo=repo;
+    private final CustomerRepository repoc;
+    private final MenuItemRepository repom;
+
+    public OrderServiceImp(OrderRepository repo, CustomerRepository repoc, MenuItemRepository repom) {
+        this.repo = repo;
+        this.repoc = repoc;
+        this.repom = repom;
     }
 
-    
+    @Transactional
+    public OrderResponseDto placeOrder(OrderRequestDto o) {
+        Order order = new Order();
+        Customer c = repoc.findById(o.getCustomerId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "There is no such customer"));
+        order.setCustomer(c);
+
+        if (o.getItems().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Need to add item");
+        }
+
+        List<OrderItem> orderItems = new ArrayList<>();
+        int totalAmount = 0;
+        for (OrderItemRequestDto orderItemRequestDto : o.getItems()) {
+
+            MenuItem menuItem = repom.findById(orderItemRequestDto.getItemId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No such item"));
+
+                    if(!menuItem.isAvailability()){
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Item is not avaialable");
+                    }
+
+                    OrderItem orderItem = new OrderItem();
+                    orderItem.setMenuItem(menuItem);
+                    if(orderItemRequestDto.getQuantity()<1){
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Quantity must be atleat 1");
+                    }
+                    orderItem.setQuantity(orderItemRequestDto.getQuantity());
+                    orderItem.setOrder(order);
+
+                    int subtotal = menuItem.getPrice()*orderItemRequestDto.getQuantity();
+                    orderItem.setSubTotal(subtotal);
+
+                    totalAmount += subtotal;
+                    orderItems.add(orderItem);
+        }
+
+        order.setOrderItems(orderItems);
+        order.setTotalAmount(totalAmount);
+        order.setOrderStatus(OrderStatus.CREATED);
+        order.setLocalDateTime(LocalDateTime.now());
+
+        Order saved = repo.save(order);
+
+        OrderResponseDto response = new OrderResponseDto();
+        response.setOrderId(saved.getOrderId());
+        response.setTotalAmount(saved.getTotalAmount());
+        response.setOrderStatus(saved.getOrderStatus());
+        List<OrderItemResponseDto> oiList = new ArrayList<>();
+        for(OrderItem oi: saved.getOrderItems()){
+            OrderItemResponseDto orderItemResponse = new OrderItemResponseDto();
+            orderItemResponse.setOrderItemId(oi.getOrderItemId());
+            orderItemResponse.setItemName(oi.getMenuItem().getItemName());
+            orderItemResponse.setPrice(oi.getMenuItem().getPrice());
+            orderItemResponse.setQuantity(oi.getQuantity());
+            orderItemResponse.setSubTotal(oi.getSubTotal());
+            oiList.add(orderItemResponse);
+        }
+        response.setItems(oiList);
+
+        return response;
+        
+    }
 }

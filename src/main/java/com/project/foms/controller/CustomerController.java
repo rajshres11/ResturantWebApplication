@@ -18,6 +18,8 @@ import com.project.foms.dto.customerdto.CustomerRequestDto;
 import com.project.foms.dto.customerdto.CustomerResponseDto;
 import com.project.foms.service.customerService.CustomerService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
@@ -28,7 +30,7 @@ public class CustomerController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<CustomerResponseDto>> createCustomer(@RequestBody CustomerRequestDto c){
+    public ResponseEntity<ApiResponse<CustomerResponseDto>> createCustomer(@Valid @RequestBody CustomerRequestDto c){
         CustomerResponseDto customer = service.createCustomer(c);
         ApiResponse<CustomerResponseDto> response= new ApiResponse<>(HttpStatus.CREATED.value(),"Customer Created",customer);
         return new ResponseEntity<>(response,HttpStatus.CREATED);
@@ -49,7 +51,7 @@ public class CustomerController {
     }
 
     @PutMapping("/update/{customerId}")
-    public ResponseEntity<ApiResponse<CustomerResponseDto>> updateCustomer(@PathVariable int customerId,@RequestBody CustomerRequestDto c){
+    public ResponseEntity<ApiResponse<CustomerResponseDto>> updateCustomer(@Valid @PathVariable int customerId,@RequestBody CustomerRequestDto c){
         service.updateCustomer(customerId, c);
         CustomerResponseDto customer = service.getCustomerById(customerId);
         ApiResponse<CustomerResponseDto> response = new ApiResponse<CustomerResponseDto>(HttpStatus.OK.value(),"Customer updated", customer);

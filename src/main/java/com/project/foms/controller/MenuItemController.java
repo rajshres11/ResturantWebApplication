@@ -19,6 +19,8 @@ import com.project.foms.dto.menuItemdto.MenuItemRequestDto;
 import com.project.foms.dto.menuItemdto.MenuItemResponseDto;
 import com.project.foms.service.menuItemService.MenuItemService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/menuitem")
 public class MenuItemController {
@@ -30,7 +32,7 @@ public class MenuItemController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<MenuItemResponseDto>> createMenuItem(@RequestBody MenuItemRequestDto m) {
+    public ResponseEntity<ApiResponse<MenuItemResponseDto>> createMenuItem(@Valid @RequestBody MenuItemRequestDto m) {
         MenuItemResponseDto menuItem = service.createMenuItem(m);
         ApiResponse<MenuItemResponseDto> response = new ApiResponse<MenuItemResponseDto>(HttpStatus.CREATED.value(),
                 "Menu item created sussesfully", menuItem);

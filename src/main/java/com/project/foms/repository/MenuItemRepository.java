@@ -13,4 +13,5 @@ public interface MenuItemRepository extends JpaRepository<MenuItem,Integer>{
     
     List<MenuItem> findByPriceGreaterThan(int price);// dont have to use Optional with list if there is nothing it will return null.
     Optional<MenuItem> findByItemName(String itemName);
+    boolean itemIsAvailaible(int itemId);
 }
