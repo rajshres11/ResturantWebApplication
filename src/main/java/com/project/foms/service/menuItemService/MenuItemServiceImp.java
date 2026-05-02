@@ -89,11 +89,11 @@ public class MenuItemServiceImp implements MenuItemService {
         List<MenuItemResponseDto> responseList = new ArrayList<>();
         List<MenuItem> menuItems = repo.findByPriceGreaterThan(price);
 
-        if(menuItems.isEmpty()){
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND,"No item is greater than this price");
+        if (menuItems.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No item is greater than this price");
         }
 
-        for(MenuItem m:menuItems){
+        for (MenuItem m : menuItems) {
             MenuItemResponseDto response = new MenuItemResponseDto();
             response.setItemId(m.getItemId());
             response.setItmeName(m.getItemName());
@@ -104,9 +104,10 @@ public class MenuItemServiceImp implements MenuItemService {
         return responseList;
     }
 
-    public MenuItemResponseDto getByItemName(String itemName){
+    public MenuItemResponseDto getByItemName(String itemName) {
         MenuItem menuItem = repo.findByItemName(itemName).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no such item available."));;
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no such item available."));
+        ;
         MenuItemResponseDto response = new MenuItemResponseDto();
         response.setItemId(menuItem.getItemId());
         response.setItmeName(menuItem.getItemName());

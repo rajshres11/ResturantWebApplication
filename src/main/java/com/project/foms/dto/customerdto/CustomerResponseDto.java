@@ -1,7 +1,7 @@
 package com.project.foms.dto.customerdto;
 
 public class CustomerResponseDto {
-    
+
     private int customerId;
 
     private String customerName;
@@ -54,5 +54,4 @@ public class CustomerResponseDto {
         this.address = address;
     }
 
-    
 }

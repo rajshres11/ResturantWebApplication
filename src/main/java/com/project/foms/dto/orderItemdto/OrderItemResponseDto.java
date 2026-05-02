@@ -1,7 +1,7 @@
 package com.project.foms.dto.orderItemdto;
 
 public class OrderItemResponseDto {
-   
+
     private int orderItemId;
 
     private String itemName;
@@ -13,7 +13,7 @@ public class OrderItemResponseDto {
     private int subTotal;
 
     // Getter and Sette
-    
+
     public String getItemName() {
         return itemName;
     }
@@ -54,5 +54,4 @@ public class OrderItemResponseDto {
         this.orderItemId = orderItemId;
     }
 
-    
 }

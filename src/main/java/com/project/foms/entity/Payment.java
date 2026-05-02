@@ -12,11 +12,11 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Payment {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long paymentId;
-    
+
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 

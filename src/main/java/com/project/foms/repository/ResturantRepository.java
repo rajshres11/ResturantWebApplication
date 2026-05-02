@@ -9,9 +9,10 @@ import org.springframework.stereotype.Repository;
 import com.project.foms.entity.Resturant;
 
 @Repository
-public interface ResturantRepository extends JpaRepository<Resturant,Integer>{
-    
+public interface ResturantRepository extends JpaRepository<Resturant, Integer> {
+
     List<Resturant> findByLocation(String location);
-    //Optional is for handle exception.
+
+    // Optional is for handle exception.
     Optional<Resturant> findByResturantName(String resturantName);
 }

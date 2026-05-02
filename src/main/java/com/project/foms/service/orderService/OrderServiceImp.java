@@ -35,6 +35,7 @@ public class OrderServiceImp implements OrderService {
         this.repom = repom;
     }
 
+    @Override
     @Transactional
     public OrderResponseDto placeOrder(OrderRequestDto o) {
         Order order = new Order();
@@ -53,23 +54,23 @@ public class OrderServiceImp implements OrderService {
             MenuItem menuItem = repom.findById(orderItemRequestDto.getItemId())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No such item"));
 
-                    if(!menuItem.isAvailability()){
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Item is not avaialable");
-                    }
+            if (!menuItem.isAvailability()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Item is not avaialable");
+            }
 
-                    OrderItem orderItem = new OrderItem();
-                    orderItem.setMenuItem(menuItem);
-                    if(orderItemRequestDto.getQuantity()<1){
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Quantity must be atleat 1");
-                    }
-                    orderItem.setQuantity(orderItemRequestDto.getQuantity());
-                    orderItem.setOrder(order);
+            OrderItem orderItem = new OrderItem();
+            orderItem.setMenuItem(menuItem);
+            if (orderItemRequestDto.getQuantity() < 1) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Quantity must be atleat 1");
+            }
+            orderItem.setQuantity(orderItemRequestDto.getQuantity());
+            orderItem.setOrder(order);
 
-                    int subtotal = menuItem.getPrice()*orderItemRequestDto.getQuantity();
-                    orderItem.setSubTotal(subtotal);
+            int subtotal = menuItem.getPrice() * orderItemRequestDto.getQuantity();
+            orderItem.setSubTotal(subtotal);
 
-                    totalAmount += subtotal;
-                    orderItems.add(orderItem);
+            totalAmount += subtotal;
+            orderItems.add(orderItem);
         }
 
         order.setOrderItems(orderItems);
@@ -84,7 +85,7 @@ public class OrderServiceImp implements OrderService {
         response.setTotalAmount(saved.getTotalAmount());
         response.setOrderStatus(saved.getOrderStatus());
         List<OrderItemResponseDto> oiList = new ArrayList<>();
-        for(OrderItem oi: saved.getOrderItems()){
+        for (OrderItem oi : saved.getOrderItems()) {
             OrderItemResponseDto orderItemResponse = new OrderItemResponseDto();
             orderItemResponse.setOrderItemId(oi.getOrderItemId());
             orderItemResponse.setItemName(oi.getMenuItem().getItemName());
@@ -96,6 +97,32 @@ public class OrderServiceImp implements OrderService {
         response.setItems(oiList);
 
         return response;
-        
+
+    }
+
+    @Override
+    public List<OrderResponseDto> getAllOrders() {
+        List<Order> orders = repo.findAll();
+        List<OrderResponseDto> responseList = new ArrayList<>();
+        for (Order o : orders) {
+            OrderResponseDto response = new OrderResponseDto();
+            response.setOrderId(o.getOrderId());
+            response.setOrderStatus(o.getOrderStatus());
+            response.setTotalAmount(o.getTotalAmount());
+            List<OrderItem> orderItemList = o.getOrderItems();
+            List<OrderItemResponseDto> orderItemResponse = new ArrayList<>();
+            for (OrderItem oi : orderItemList) {
+                OrderItemResponseDto oiResponse = new OrderItemResponseDto();
+                oiResponse.setOrderItemId(oi.getOrderItemId());
+                oiResponse.setItemName(oi.getMenuItem().getItemName());
+                oiResponse.setPrice(oi.getMenuItem().getPrice());
+                oiResponse.setQuantity(oi.getQuantity());
+                oiResponse.setSubTotal(oi.getSubTotal());
+                orderItemResponse.add(oiResponse);
+            }
+            response.setItems(orderItemResponse);
+            responseList.add(response);
+        }
+        return responseList;
     }
 }

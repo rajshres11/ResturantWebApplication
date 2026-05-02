@@ -4,11 +4,11 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 public class OrderItemRequestDto {
-    
+
     @NotNull(message = "ItemId is required")
     private int itemId;
 
-    @Min(value = 1,message = "Quantity must be atleast one")
+    @Min(value = 1, message = "Quantity must be atleast one")
     private int quantity;
 
     // Getter and Setter
@@ -29,5 +29,4 @@ public class OrderItemRequestDto {
         this.quantity = quantity;
     }
 
-    
 }

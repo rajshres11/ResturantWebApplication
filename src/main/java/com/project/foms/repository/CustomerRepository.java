@@ -8,9 +8,11 @@ import org.springframework.stereotype.Repository;
 import com.project.foms.entity.Customer;
 
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer,Integer>{
-    
+public interface CustomerRepository extends JpaRepository<Customer, Integer> {
+
     Optional<Customer> findByContact(int contact);
+
     boolean existsByEmail(String email);
+
     boolean existsByContact(String contact);
 }

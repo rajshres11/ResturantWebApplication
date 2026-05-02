@@ -24,73 +24,83 @@ import com.project.foms.service.resturantService.ResturantService;
 @RestController
 @RequestMapping("/resturant")
 public class ResturantController {
-    
+
     @Autowired
     private ResturantService service;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<ResturantResponseDto>> createResturant(@RequestBody ResturantRequestDto r){
+    public ResponseEntity<ApiResponse<ResturantResponseDto>> createResturant(@RequestBody ResturantRequestDto r) {
         ResturantResponseDto resturant = service.createResturant(r);
-        ApiResponse<ResturantResponseDto> response = new ApiResponse<ResturantResponseDto>(HttpStatus.CREATED.value(),"Resturant Added Sussesfully", resturant);
-        return new ResponseEntity<>(response,HttpStatus.CREATED);
+        ApiResponse<ResturantResponseDto> response = new ApiResponse<ResturantResponseDto>(HttpStatus.CREATED.value(),
+                "Resturant Added Sussesfully", resturant);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping("/get/all")
-    public ResponseEntity<ApiResponse<List<ResturantResponseDto>>> getAllResturant(){
+    public ResponseEntity<ApiResponse<List<ResturantResponseDto>>> getAllResturant() {
         List<ResturantResponseDto> resturantList = service.getAllResturant();
-        ApiResponse<List<ResturantResponseDto>> response = new ApiResponse<List<ResturantResponseDto>>(HttpStatus.OK.value(),"All resturant fetched", resturantList);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        ApiResponse<List<ResturantResponseDto>> response = new ApiResponse<List<ResturantResponseDto>>(
+                HttpStatus.OK.value(), "All resturant fetched", resturantList);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/get/{resturantId}")
-    public ResponseEntity<ApiResponse<ResturantResponseDto>> getResturantById(@PathVariable int resturantId){
+    public ResponseEntity<ApiResponse<ResturantResponseDto>> getResturantById(@PathVariable int resturantId) {
         ResturantResponseDto resturant = service.getResturantById(resturantId);
-        ApiResponse<ResturantResponseDto> response = new ApiResponse<ResturantResponseDto>(HttpStatus.OK.value(),"Resturant fetched Sussesfully", resturant);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        ApiResponse<ResturantResponseDto> response = new ApiResponse<ResturantResponseDto>(HttpStatus.OK.value(),
+                "Resturant fetched Sussesfully", resturant);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/update/{resturantId}")
-    public ResponseEntity<ApiResponse<ResturantResponseDto>> updateResturant(@PathVariable int resturantId,@RequestBody ResturantRequestDto r){
+    public ResponseEntity<ApiResponse<ResturantResponseDto>> updateResturant(@PathVariable int resturantId,
+            @RequestBody ResturantRequestDto r) {
         ResturantResponseDto resturant = service.updateResturant(resturantId, r);
-        ApiResponse<ResturantResponseDto> response = new ApiResponse<ResturantResponseDto>(HttpStatus.OK.value(),"Resturant Updated Sussesfully", resturant);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        ApiResponse<ResturantResponseDto> response = new ApiResponse<ResturantResponseDto>(HttpStatus.OK.value(),
+                "Resturant Updated Sussesfully", resturant);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{resturantId}")
-    public ResponseEntity<ApiResponse<String>> deleteResturant(@PathVariable int resturantId){
+    public ResponseEntity<ApiResponse<String>> deleteResturant(@PathVariable int resturantId) {
         service.deleteResturant(resturantId);
-        ApiResponse<String> response = new ApiResponse<String>(HttpStatus.OK.value(),"Resturant vanished", null);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        ApiResponse<String> response = new ApiResponse<String>(HttpStatus.OK.value(), "Resturant vanished", null);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/get/location/{location}")
-    public ResponseEntity<ApiResponse<List<ResturantResponseDto>>> getResturantByLocation(@PathVariable String location){
+    public ResponseEntity<ApiResponse<List<ResturantResponseDto>>> getResturantByLocation(
+            @PathVariable String location) {
         List<ResturantResponseDto> resturantList = service.getResturantByLocation(location);
-        ApiResponse<List<ResturantResponseDto>> response = new ApiResponse<List<ResturantResponseDto>>(HttpStatus.OK.value(),"Resturant fetched sussesfully", resturantList);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        ApiResponse<List<ResturantResponseDto>> response = new ApiResponse<List<ResturantResponseDto>>(
+                HttpStatus.OK.value(), "Resturant fetched sussesfully", resturantList);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/get/resturantName/{resturantName}")
-    public ResponseEntity<ApiResponse<ResturantResponseDto>> getResturantByName(@PathVariable String resturantName){
+    public ResponseEntity<ApiResponse<ResturantResponseDto>> getResturantByName(@PathVariable String resturantName) {
         ResturantResponseDto resturant = service.getResturantByName(resturantName);
-        ApiResponse<ResturantResponseDto> response = new ApiResponse<>(HttpStatus.OK.value(),"Resturant fetched sussesfully", resturant);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        ApiResponse<ResturantResponseDto> response = new ApiResponse<>(HttpStatus.OK.value(),
+                "Resturant fetched sussesfully", resturant);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/get/menuItems/{resturantId}")
-    public ResponseEntity<ApiResponse<List<MenuItemResponseDto>>> getMenuItemsByResturant(@PathVariable int resturantId){
+    public ResponseEntity<ApiResponse<List<MenuItemResponseDto>>> getMenuItemsByResturant(
+            @PathVariable int resturantId) {
         List<MenuItemResponseDto> menuList = service.getMenuItemsByResturant(resturantId);
-        ApiResponse<List<MenuItemResponseDto>> response = new ApiResponse<>(HttpStatus.OK.value(),"Resturant fetched sussesfully", menuList);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        ApiResponse<List<MenuItemResponseDto>> response = new ApiResponse<>(HttpStatus.OK.value(),
+                "Resturant fetched sussesfully", menuList);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-   
-
- @GetMapping("/get/all/resturants")
-    public ResponseEntity<ApiResponse<List<ResturantResponseDto>>> getResturantByPage(@RequestParam int page,@RequestParam int size){
+    @GetMapping("/get/all/resturants")
+    public ResponseEntity<ApiResponse<List<ResturantResponseDto>>> getResturantByPage(@RequestParam int page,
+            @RequestParam int size) {
         List<ResturantResponseDto> resturantList = service.getResturantByPage(page, size);
-        ApiResponse<List<ResturantResponseDto>> response = new ApiResponse<List<ResturantResponseDto>>(HttpStatus.OK.value(),"Resturant fetched sussesfully", resturantList);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        ApiResponse<List<ResturantResponseDto>> response = new ApiResponse<List<ResturantResponseDto>>(
+                HttpStatus.OK.value(), "Resturant fetched sussesfully", resturantList);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

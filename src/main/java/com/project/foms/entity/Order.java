@@ -19,7 +19,7 @@ import jakarta.persistence.OneToOne;
 
 @Entity
 public class Order {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
@@ -36,14 +36,15 @@ public class Order {
     private int totalAmount;
 
     @OneToOne
-    @JoinColumn(name="paymentId")
+    @JoinColumn(name = "paymentId")
     private Payment payment;
 
-    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)// cascade will WILL save OrderItem automatically when Order is saved.
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL) // cascade will WILL save OrderItem automatically when
+                                                              // Order is saved.
     private List<OrderItem> orderItems;
 
     // Getter and Setter
-    
+
     public int getOrderId() {
         return orderId;
     }

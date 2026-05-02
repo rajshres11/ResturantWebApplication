@@ -6,12 +6,18 @@ import com.project.foms.dto.menuItemdto.MenuItemRequestDto;
 import com.project.foms.dto.menuItemdto.MenuItemResponseDto;
 
 public interface MenuItemService {
-    
+
     public MenuItemResponseDto createMenuItem(MenuItemRequestDto m);
+
     public List<MenuItemResponseDto> getAllMenuItems();
+
     public MenuItemResponseDto getMenuItemsById(int itemId);
-    public MenuItemResponseDto updateMenuItem(int itemId,MenuItemRequestDto m);
+
+    public MenuItemResponseDto updateMenuItem(int itemId, MenuItemRequestDto m);
+
     public void deleteMenuItem(int itemId);
+
     public List<MenuItemResponseDto> findItemGreaterThan(int price);
+
     public MenuItemResponseDto getByItemName(String itemName);
 }

@@ -30,7 +30,7 @@ public class Customer {
     // @JsonIgnore
     private List<Order> orderList;
 
-    //Getter and Setter
+    // Getter and Setter
 
     public int getCustomerId() {
         return customerId;

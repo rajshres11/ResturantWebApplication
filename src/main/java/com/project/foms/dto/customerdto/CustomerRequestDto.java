@@ -6,21 +6,21 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public class CustomerRequestDto {
-    
+
     @NotNull(message = "Enter name is mandatory")
     private String customerName;
 
     @Email(message = "Enter valid email format")
     private String email;
 
-    @Pattern(regexp = "^[0-9]{10}$", message="Enter valid PhoneNumber")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Enter valid PhoneNumber")
     private String contact;
 
     @NotBlank(message = "Mandatory to give address")
     private String address;
 
     // Getter and Setter
-   
+
     public String getCustomerName() {
         return customerName;
     }
@@ -52,5 +52,5 @@ public class CustomerRequestDto {
     public void setAddress(String address) {
         this.address = address;
     }
-    
+
 }

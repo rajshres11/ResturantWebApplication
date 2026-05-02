@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public class OrderRequestDto {
-    
+
     @NotNull(message = "Customer Id is required")
     private int CustomerId;
 
@@ -33,6 +33,4 @@ public class OrderRequestDto {
         this.items = items;
     }
 
-    
-    
 }

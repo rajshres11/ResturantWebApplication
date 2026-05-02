@@ -23,59 +23,68 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
-    
+
     private final CustomerService service;
-    public CustomerController(CustomerService service){
-        this.service=service;
+
+    public CustomerController(CustomerService service) {
+        this.service = service;
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<CustomerResponseDto>> createCustomer(@Valid @RequestBody CustomerRequestDto c){
+    public ResponseEntity<ApiResponse<CustomerResponseDto>> createCustomer(@Valid @RequestBody CustomerRequestDto c) {
         CustomerResponseDto customer = service.createCustomer(c);
-        ApiResponse<CustomerResponseDto> response= new ApiResponse<>(HttpStatus.CREATED.value(),"Customer Created",customer);
-        return new ResponseEntity<>(response,HttpStatus.CREATED);
+        ApiResponse<CustomerResponseDto> response = new ApiResponse<>(HttpStatus.CREATED.value(), "Customer Created",
+                customer);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping("/get/all")
-    public ResponseEntity<ApiResponse<List<CustomerResponseDto>>> getAllCustomer(){
+    public ResponseEntity<ApiResponse<List<CustomerResponseDto>>> getAllCustomer() {
         List<CustomerResponseDto> list = service.getAllCustomer();
-        ApiResponse<List<CustomerResponseDto>> response = new ApiResponse<List<CustomerResponseDto>>(HttpStatus.OK.value(),"All Customer Fetched", list);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        ApiResponse<List<CustomerResponseDto>> response = new ApiResponse<List<CustomerResponseDto>>(
+                HttpStatus.OK.value(), "All Customer Fetched", list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/get/{customerId}")
-    public ResponseEntity<ApiResponse<CustomerResponseDto>> getByCustomerId(@PathVariable int customerId){
+    public ResponseEntity<ApiResponse<CustomerResponseDto>> getByCustomerId(@PathVariable int customerId) {
         CustomerResponseDto customer = service.getCustomerById(customerId);
-        ApiResponse<CustomerResponseDto> response= new ApiResponse<>(HttpStatus.OK.value(),"Feteched sussefully", customer);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        ApiResponse<CustomerResponseDto> response = new ApiResponse<>(HttpStatus.OK.value(), "Feteched sussefully",
+                customer);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/update/{customerId}")
-    public ResponseEntity<ApiResponse<CustomerResponseDto>> updateCustomer(@Valid @PathVariable int customerId,@RequestBody CustomerRequestDto c){
+    public ResponseEntity<ApiResponse<CustomerResponseDto>> updateCustomer(@Valid @PathVariable int customerId,
+            @RequestBody CustomerRequestDto c) {
         service.updateCustomer(customerId, c);
         CustomerResponseDto customer = service.getCustomerById(customerId);
-        ApiResponse<CustomerResponseDto> response = new ApiResponse<CustomerResponseDto>(HttpStatus.OK.value(),"Customer updated", customer);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        ApiResponse<CustomerResponseDto> response = new ApiResponse<CustomerResponseDto>(HttpStatus.OK.value(),
+                "Customer updated", customer);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // @DeleteMapping("/delete/{customerId}")
-    // public ResponseEntity<ApiResponse<String>> deleteCustomer(@PathVariable int customerId){
-    //     service.deleteCustomer(customerId);
-    //     return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(),"Customer deleted sussesfully", null),HttpStatus.OK);
+    // public ResponseEntity<ApiResponse<String>> deleteCustomer(@PathVariable int
+    // customerId){
+    // service.deleteCustomer(customerId);
+    // return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(),"Customer
+    // deleted sussesfully", null),HttpStatus.OK);
     // }
 
     // If we want to give NO_CONTENT there is no body with this.
     @DeleteMapping("/delete/{customerId}")
-    public ResponseEntity<Void> deleteCustomer(@PathVariable int customerId){
+    public ResponseEntity<Void> deleteCustomer(@PathVariable int customerId) {
         service.deleteCustomer(customerId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/bycontact/{contact}")
-    public ResponseEntity<ApiResponse<CustomerResponseDto>> getByContact(@PathVariable int contact){
+    public ResponseEntity<ApiResponse<CustomerResponseDto>> getByContact(@PathVariable int contact) {
         CustomerResponseDto customer = service.getCustomerByContact(contact);
-        ApiResponse<CustomerResponseDto> response = new ApiResponse<CustomerResponseDto>(HttpStatus.OK.value(),"Customer fetched", customer);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        ApiResponse<CustomerResponseDto> response = new ApiResponse<CustomerResponseDto>(HttpStatus.OK.value(),
+                "Customer fetched", customer);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    
+
 }

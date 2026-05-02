@@ -3,7 +3,7 @@ package com.project.foms.dto.menuItemdto;
 public class MenuItemResponseDto {
 
     private int itemId;
-    
+
     private String itmeName;
 
     private int price;
@@ -41,5 +41,5 @@ public class MenuItemResponseDto {
     public void setItemId(int itemId) {
         this.itemId = itemId;
     }
-    
+
 }

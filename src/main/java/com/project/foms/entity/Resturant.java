@@ -10,7 +10,7 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 public class Resturant {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int resturantId;

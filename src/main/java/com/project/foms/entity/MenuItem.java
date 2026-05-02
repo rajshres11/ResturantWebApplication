@@ -12,7 +12,7 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 public class MenuItem {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int itemId;
@@ -79,5 +79,5 @@ public class MenuItem {
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
- 
+
 }

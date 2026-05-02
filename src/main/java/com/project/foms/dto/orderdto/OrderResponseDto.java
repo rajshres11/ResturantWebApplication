@@ -6,7 +6,7 @@ import com.project.foms.dto.orderItemdto.OrderItemResponseDto;
 import com.project.foms.enums.OrderStatus;
 
 public class OrderResponseDto {
-    
+
     private int orderId;
 
     private int totalAmount;
@@ -49,6 +49,4 @@ public class OrderResponseDto {
         this.items = items;
     }
 
-    
-    
 }

@@ -1,7 +1,7 @@
 package com.project.foms.dto.resturantdto;
 
 public class ResturantResponseDto {
-    
+
     private int resturantId;
 
     private String resturantName;

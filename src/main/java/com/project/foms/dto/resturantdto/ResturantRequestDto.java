@@ -1,7 +1,7 @@
 package com.project.foms.dto.resturantdto;
 
 public class ResturantRequestDto {
-    
+
     private String resturantName;
 
     private String location;
@@ -23,5 +23,5 @@ public class ResturantRequestDto {
     public void setLocation(String location) {
         this.location = location;
     }
-    
+
 }

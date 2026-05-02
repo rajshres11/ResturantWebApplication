@@ -26,14 +26,14 @@ public class CustomerServiceImp implements CustomerService {
     public CustomerResponseDto createCustomer(CustomerRequestDto c) {
         Customer customer = new Customer();
         customer.setCustomerName(c.getCustomerName());
-        if(repo.existsByEmail(c.getEmail())){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Email already exists");
-        }else{
+        if (repo.existsByEmail(c.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists");
+        } else {
             customer.setEmail(c.getEmail());
         }
-        if(repo.existsByContact(c.getContact())){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"PhoneNumber already exists");
-        }else{
+        if (repo.existsByContact(c.getContact())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "PhoneNumber already exists");
+        } else {
             customer.setContact(c.getContact());
         }
         customer.setAddress(c.getAddress());
@@ -68,7 +68,7 @@ public class CustomerServiceImp implements CustomerService {
     @Override
     public CustomerResponseDto getCustomerById(int customerId) {
         CustomerResponseDto response = new CustomerResponseDto();
-        Customer customer = repo.findById(customerId).orElseThrow(()-> new NoCustomerException());
+        Customer customer = repo.findById(customerId).orElseThrow(() -> new NoCustomerException());
         response.setCustomerId(customer.getCustomerId());
         response.setCustomerName(customer.getCustomerName());
         response.setEmail(customer.getEmail());
@@ -79,7 +79,7 @@ public class CustomerServiceImp implements CustomerService {
 
     @Override
     public void updateCustomer(int customerId, CustomerRequestDto c) {
-        Customer existingCustomer = repo.findById(customerId).orElseThrow(()-> new NoCustomerException());
+        Customer existingCustomer = repo.findById(customerId).orElseThrow(() -> new NoCustomerException());
         existingCustomer.setCustomerName(c.getCustomerName());
         existingCustomer.setEmail(c.getEmail());
         existingCustomer.setContact(c.getContact());
@@ -95,7 +95,8 @@ public class CustomerServiceImp implements CustomerService {
     @Override
     public CustomerResponseDto getCustomerByContact(int contact) {
         CustomerResponseDto response = new CustomerResponseDto();
-        Customer c = repo.findByContact(contact).orElseThrow(()-> new NoCustomerException());;
+        Customer c = repo.findByContact(contact).orElseThrow(() -> new NoCustomerException());
+        ;
         response.setCustomerId(c.getCustomerId());
         response.setCustomerName(c.getCustomerName());
         response.setEmail(c.getEmail());

@@ -3,7 +3,7 @@ package com.project.foms.dto.menuItemdto;
 import jakarta.validation.constraints.PositiveOrZero;
 
 public class MenuItemRequestDto {
-    
+
     private String itemName;
 
     @PositiveOrZero(message = "Price must be in positive")
@@ -35,5 +35,4 @@ public class MenuItemRequestDto {
         this.availability = availability;
     }
 
-    
 }
