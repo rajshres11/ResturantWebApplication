@@ -60,7 +60,7 @@ com.project.foms
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/your-username/foms.git
+git clone https://github.com/rajshres11/foms.git
 cd foms
 ```
 
