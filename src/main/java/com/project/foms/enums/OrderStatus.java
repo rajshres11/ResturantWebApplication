@@ -2,7 +2,7 @@ package com.project.foms.enums;
 
 public enum OrderStatus {
     CREATED,
+    CANCELED,
     PREPARING,
-    ON_THE_WAY,
     DELIVERED
 }
