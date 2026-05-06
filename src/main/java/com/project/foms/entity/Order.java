@@ -97,14 +97,6 @@ public class Order {
         this.totalAmount = totalAmount;
     }
 
-    public OrderStatus getStatus() {
-        return orderStatus;
-    }
-
-    public void setStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
     public LocalDateTime getLocalDateTime() {
         return localDateTime;
     }

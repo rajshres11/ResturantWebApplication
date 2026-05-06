@@ -1,5 +1,6 @@
 package com.project.foms.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,10 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> findByCustomerCustomerId(int customerId);
 
     List<Order> findByOrderStatus(OrderStatus orderStatus);
+
+    List<Order> findByLocalDateTime(LocalDateTime localDateTime);
+
+    List<Order> findByTotalAmountBetween(int minAmount,int maxAmount);
+    
+    List<Order> findDistinctByOrderItemsMenuItemResturantResturantId(int resturantId);
 }

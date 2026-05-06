@@ -257,7 +257,93 @@ public class OrderServiceImp implements OrderService {
         return response;
     }
 
-    public List<OrderResponseDto> getOrderByStatus(OrderStatus status){
-        
+    @Override
+    public List<OrderResponseDto> getOrderByStatus(OrderStatus status) {
+        List<Order> orders = repo.findByOrderStatus(status);
+        List<OrderResponseDto> responseList = new ArrayList<>();
+        for (Order o : orders) {
+            OrderResponseDto response = new OrderResponseDto();
+            response.setOrderId(o.getOrderId());
+            response.setOrderStatus(status);
+            response.setTotalAmount(o.getTotalAmount());
+            List<OrderItem> orderItems = o.getOrderItems();
+            List<OrderItemResponseDto> orderItemResponseList = new ArrayList<>();
+            for (OrderItem oi : orderItems) {
+                OrderItemResponseDto orderItemResponse = new OrderItemResponseDto();
+                orderItemResponse.setItemName(oi.getMenuItem().getItemName());
+                orderItemResponse.setOrderItemId(oi.getOrderItemId());
+                orderItemResponse.setPrice(oi.getMenuItem().getPrice());
+                orderItemResponse.setQuantity(oi.getQuantity());
+                orderItemResponseList.add(orderItemResponse);
+            }
+            response.setItems(orderItemResponseList);
+            responseList.add(response);
+        }
+        return responseList;
     }
+
+    @Override
+    public List<OrderResponseDto> getOrderByDate(LocalDateTime localDateTime){
+        List<Order> orders = repo.findByLocalDateTime(localDateTime);
+        List<OrderResponseDto> responseList = new ArrayList<>();
+        for (Order o : orders) {
+            OrderResponseDto response = new OrderResponseDto();
+            response.setOrderId(o.getOrderId());
+            response.setOrderStatus(o.getOrderStatus());
+            response.setTotalAmount(o.getTotalAmount());
+            List<OrderItem> orderItems = o.getOrderItems();
+            List<OrderItemResponseDto> orderItemResponseList = new ArrayList<>();
+            for (OrderItem oi : orderItems) {
+                OrderItemResponseDto orderItemResponse = new OrderItemResponseDto();
+                orderItemResponse.setItemName(oi.getMenuItem().getItemName());
+                orderItemResponse.setOrderItemId(oi.getOrderItemId());
+                orderItemResponse.setPrice(oi.getMenuItem().getPrice());
+                orderItemResponse.setQuantity(oi.getQuantity());
+                orderItemResponseList.add(orderItemResponse);
+            }
+            response.setItems(orderItemResponseList);
+            responseList.add(response);
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<OrderResponseDto> getOrderByTotalAmount(int minAmount,int maxAmount){
+        List<Order> orders = repo.findByTotalAmountBetween(minAmount, maxAmount);
+        List<OrderResponseDto> responseList = new ArrayList<>();
+        for (Order o : orders) {
+            OrderResponseDto response = new OrderResponseDto();
+            response.setOrderId(o.getOrderId());
+            response.setOrderStatus(o.getOrderStatus());
+            response.setTotalAmount(o.getTotalAmount());
+            List<OrderItem> orderItems = o.getOrderItems();
+            List<OrderItemResponseDto> orderItemResponseList = new ArrayList<>();
+            for (OrderItem oi : orderItems) {
+                OrderItemResponseDto orderItemResponse = new OrderItemResponseDto();
+                orderItemResponse.setItemName(oi.getMenuItem().getItemName());
+                orderItemResponse.setOrderItemId(oi.getOrderItemId());
+                orderItemResponse.setPrice(oi.getMenuItem().getPrice());
+                orderItemResponse.setQuantity(oi.getQuantity());
+                orderItemResponseList.add(orderItemResponse);
+            }
+            response.setItems(orderItemResponseList);
+            responseList.add(response);
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<OrderResponseDto> getOrdersByResturant(int resturantId){
+        List<Order> orders = repo.findDistinctByOrderItemsMenuItemResturantResturantId(resturantId);
+        List<OrderResponseDto> responseList = new ArrayList<>();
+        for(Order o:orders){
+            OrderResponseDto response = new OrderResponseDto();
+            response.setOrderId(o.getOrderId());
+            response.setOrderStatus(o.getOrderStatus());
+            response.setTotalAmount(o.getTotalAmount());
+            responseList.add(response);
+        }
+        return responseList;
+    }
+    
 }
