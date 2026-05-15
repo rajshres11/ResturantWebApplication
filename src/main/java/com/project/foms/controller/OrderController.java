@@ -1,5 +1,6 @@
 package com.project.foms.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.foms.dto.ApiResponse;
@@ -72,11 +74,31 @@ public class OrderController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    @GetMapping("/getOrderBy/{status}")
+    @GetMapping("/getOrderBy/status/{status}")
     public ResponseEntity<ApiResponse<List<OrderResponseDto>>> getOrderByStatus(@PathVariable OrderStatus status){
         List<OrderResponseDto> orderList = orderService.getOrderByStatus(status);
         ApiResponse<List<OrderResponseDto>> response = new ApiResponse<List<OrderResponseDto>>(HttpStatus.OK.value(),"All order fetched sussesfully", orderList);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
    
+    @GetMapping("/getOrdersBy/time/{localDateTime}")
+    public ResponseEntity<ApiResponse<List<OrderResponseDto>>>  getOrderByDate(@PathVariable LocalDateTime localDateTime){
+        List<OrderResponseDto> orderList = orderService.getOrderByDate(localDateTime);
+        ApiResponse<List<OrderResponseDto>> response = new ApiResponse<List<OrderResponseDto>>(HttpStatus.OK.value(),"All orders fetched sussesfully", orderList);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    @GetMapping("/getOrdersBy/amount")
+    public ResponseEntity<ApiResponse<List<OrderResponseDto>>>  getOrderByTotalAmount(@RequestParam int minAmount,@RequestParam int maxAmount){
+        List<OrderResponseDto> orderList = orderService.getOrderByTotalAmount(minAmount, maxAmount);
+        ApiResponse<List<OrderResponseDto>> response = new ApiResponse<List<OrderResponseDto>>(HttpStatus.OK.value(),"All orders fetched sussesfully", orderList);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    @GetMapping("/getOrdersBy/resturant/{resturantId}")
+    public ResponseEntity<ApiResponse<List<OrderResponseDto>>>  getOrdersByResturant(@PathVariable int resturantId){
+        List<OrderResponseDto> orderList = orderService.getOrdersByResturant(resturantId);
+        ApiResponse<List<OrderResponseDto>> response = new ApiResponse<List<OrderResponseDto>>(HttpStatus.OK.value(),"All orders fetched sussesfully", orderList);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
 }
