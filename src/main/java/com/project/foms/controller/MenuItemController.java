@@ -56,7 +56,7 @@ public class MenuItemController {
     }
 
     @PutMapping("/update/{itemId}")
-    public ResponseEntity<ApiResponse<MenuItemResponseDto>> updateMenuItem(@PathVariable int itemId,
+    public ResponseEntity<ApiResponse<MenuItemResponseDto>> updateMenuItem(@Valid @PathVariable int itemId,
             @RequestBody MenuItemRequestDto m) {
         MenuItemResponseDto menuItem = service.updateMenuItem(itemId, m);
         return new ResponseEntity<>(
