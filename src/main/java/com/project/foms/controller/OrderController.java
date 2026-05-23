@@ -21,6 +21,7 @@ import com.project.foms.enums.OrderStatus;
 import com.project.foms.service.orderService.OrderService;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/order")
@@ -33,7 +34,7 @@ public class OrderController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<ApiResponse<OrderResponseDto>> placeOrder(@RequestBody OrderRequestDto o){
+    public ResponseEntity<ApiResponse<OrderResponseDto>> placeOrder(@Valid @RequestBody OrderRequestDto o){
         OrderResponseDto order = orderService.placeOrder(o);
         ApiResponse<OrderResponseDto> response = new ApiResponse<>(HttpStatus.CREATED.value(),"Order created sussesfully",order);
         return new ResponseEntity<>(response,HttpStatus.CREATED);
