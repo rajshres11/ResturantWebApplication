@@ -90,4 +90,18 @@ public class OrderItemServiceImp implements OrderItemService {
 
         return response;
     }
+
+    public OrderResponseDto updateOrderItemQuantity(int orderId){
+        Order existingOrder = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such order"));
+        if (existingOrder.getOrderStatus() == OrderStatus.DELIVERED ||
+                existingOrder.getOrderStatus() == OrderStatus.CANCELED) {
+
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Cannot modify this order");
+        }
+        List<OrderItem> existingOrderItems = existingOrder.getOrderItems();
+        
+    }
 }
