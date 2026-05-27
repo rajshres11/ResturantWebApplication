@@ -1,17 +1,15 @@
 package com.project.foms.dto.orderItemdto;
 
-import java.util.List;
-
 public class UpdateQuantityDto {
 
-    private List<OrderItemRequestDto> orderItems;
+    private int quantity;
 
-    public List<OrderItemRequestDto> getOrderItems() {
-        return orderItems;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setOrderItems(List<OrderItemRequestDto> orderItems) {
-        this.orderItems = orderItems;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
-    
+
 }

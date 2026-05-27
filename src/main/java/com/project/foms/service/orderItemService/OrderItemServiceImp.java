@@ -92,25 +92,8 @@ public class OrderItemServiceImp implements OrderItemService {
         return response;
     }
 
-    public OrderResponseDto updateOrderItemQuantity(int orderId, UpdateQuantityDto orderRequest) {
-        Order existingOrder = orderRepository.findById(orderId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such order"));
-        if (existingOrder.getOrderStatus() == OrderStatus.DELIVERED ||
-                existingOrder.getOrderStatus() == OrderStatus.CANCELED) {
-
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Cannot modify this order");
-        }
-        List<OrderItem> existingOrderItems = existingOrder.getOrderItems();
-        List<OrderItem> newOrderItems = new ArrayList<>();
-        int newTotal = 0;
-        for (OrderItemRequestDto orderItem : orderRequest.getOrderItems()) {
-            MenuItem menuItem = menuItemRepository.findById(orderItem.getItemId()).orElseThrow(
-                    () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "This item is not listed"));
-            if(!menuItem.isAvailability()){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"This item is not avaialble");
-            }
-            
+    @Transactional
+    public OrderResponseDto updateItemQuantity(int orderItemId,UpdateQuantityDto updateQuantityDto){
+        
     }
 }
