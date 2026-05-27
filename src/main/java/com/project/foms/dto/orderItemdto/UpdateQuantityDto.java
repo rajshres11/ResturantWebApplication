@@ -2,9 +2,9 @@ package com.project.foms.dto.orderItemdto;
 
 import java.util.List;
 
-public class AddOrderItemsDto {
-    
-    List<OrderItemRequestDto> orderItems;
+public class UpdateQuantityDto {
+
+    private List<OrderItemRequestDto> orderItems;
 
     public List<OrderItemRequestDto> getOrderItems() {
         return orderItems;
@@ -13,6 +13,5 @@ public class AddOrderItemsDto {
     public void setOrderItems(List<OrderItemRequestDto> orderItems) {
         this.orderItems = orderItems;
     }
-
     
 }
