@@ -11,12 +11,22 @@ public class MenuItemRequestDto {
 
     private boolean availability;
 
+    private int resturantId;
+
     public String getItemName() {
         return itemName;
     }
 
     public void setItemName(String itemName) {
         this.itemName = itemName;
+    }
+
+    public int getResturantId() {
+        return resturantId;
+    }
+
+    public void setResturantId(int resturantId) {
+        this.resturantId = resturantId;
     }
 
     public int getPrice() {

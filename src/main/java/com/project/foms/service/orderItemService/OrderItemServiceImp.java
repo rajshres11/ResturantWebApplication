@@ -18,6 +18,7 @@ import com.project.foms.entity.Order;
 import com.project.foms.entity.OrderItem;
 import com.project.foms.enums.OrderStatus;
 import com.project.foms.repository.MenuItemRepository;
+import com.project.foms.repository.OrderItemRepository;
 import com.project.foms.repository.OrderRepository;
 
 @Service
@@ -25,11 +26,13 @@ public class OrderItemServiceImp implements OrderItemService {
 
     private final OrderRepository orderRepository;
     private final MenuItemRepository menuItemRepository;
+    private final OrderItemRepository orderItemRepository;
 
     public OrderItemServiceImp(OrderRepository orderRepository,
-            MenuItemRepository menuItemRepository) {
+            MenuItemRepository menuItemRepository, OrderItemRepository orderItemRepository) {
         this.orderRepository = orderRepository;
         this.menuItemRepository = menuItemRepository;
+        this.orderItemRepository = orderItemRepository;
     }
 
     @Override
@@ -92,8 +95,61 @@ public class OrderItemServiceImp implements OrderItemService {
         return response;
     }
 
+    @Override
     @Transactional
-    public OrderResponseDto updateItemQuantity(int orderItemId,UpdateQuantityDto updateQuantityDto){
-        
+    public OrderResponseDto updateItemQuantity(int orderItemId, UpdateQuantityDto updateQuantityDto) {
+        OrderItem existingOrderItem = orderItemRepository.findById(orderItemId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order item is not present"));
+
+        Order order = existingOrderItem.getOrder();
+        if (order.getOrderStatus() == OrderStatus.DELIVERED || order.getOrderStatus() == OrderStatus.CANCELED) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Unable to update");
+        }
+
+        if (updateQuantityDto.getQuantity() < 1) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Order atleast have 1 item");
+        }
+        existingOrderItem.setQuantity(updateQuantityDto.getQuantity());
+        int oldSubTotal = existingOrderItem.getSubTotal();
+        int newSubTotal = existingOrderItem.getMenuItem().getPrice() * updateQuantityDto.getQuantity();
+
+        existingOrderItem.setSubTotal(newSubTotal);
+        int newTotalAmount = order.getTotalAmount() - oldSubTotal + newSubTotal;
+
+        order.setTotalAmount(newTotalAmount);
+
+        Order saved = orderRepository.save(order);
+
+        OrderResponseDto response = new OrderResponseDto();
+
+        response.setOrderId(saved.getOrderId());
+        response.setOrderStatus(saved.getOrderStatus());
+        response.setTotalAmount(saved.getTotalAmount());
+
+        List<OrderItemResponseDto> oiList = new ArrayList<>();
+
+        for (OrderItem oi : saved.getOrderItems()) {
+
+            OrderItemResponseDto orderItemResponse = new OrderItemResponseDto();
+
+            orderItemResponse.setOrderItemId(oi.getOrderItemId());
+
+            orderItemResponse.setItemName(oi.getMenuItem().getItemName());
+
+            orderItemResponse.setPrice(oi.getMenuItem().getPrice());
+
+            orderItemResponse.setQuantity(oi.getQuantity());
+
+            orderItemResponse.setSubTotal(oi.getSubTotal());
+
+            oiList.add(orderItemResponse);
+        }
+
+        response.setItems(oiList);
+
+        return response;
+
     }
+    
+    
 }

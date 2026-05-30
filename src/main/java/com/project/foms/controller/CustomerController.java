@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +19,15 @@ import com.project.foms.dto.customerdto.CustomerRequestDto;
 import com.project.foms.dto.customerdto.CustomerResponseDto;
 import com.project.foms.service.customerService.CustomerService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(
+    name = "Customer APIs",
+    description = "Operations related to customer"
+)
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
@@ -30,6 +38,7 @@ public class CustomerController {
         this.service = service;
     }
 
+    @Operation(summary = "This endpoint for create customer")
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<CustomerResponseDto>> createCustomer(@Valid @RequestBody CustomerRequestDto c) {
         CustomerResponseDto customer = service.createCustomer(c);
@@ -38,6 +47,7 @@ public class CustomerController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "This endpoint for get all customer")
     @GetMapping("/get/all")
     public ResponseEntity<ApiResponse<List<CustomerResponseDto>>> getAllCustomer() {
         List<CustomerResponseDto> list = service.getAllCustomer();
@@ -46,7 +56,8 @@ public class CustomerController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/get/{customerId}")
+    @Operation(summary = "This endpoint for get customer using customerId")
+    @GetMapping("/get/id/{customerId}")
     public ResponseEntity<ApiResponse<CustomerResponseDto>> getByCustomerId(@PathVariable int customerId) {
         CustomerResponseDto customer = service.getCustomerById(customerId);
         ApiResponse<CustomerResponseDto> response = new ApiResponse<>(HttpStatus.OK.value(), "Feteched sussefully",
@@ -54,6 +65,7 @@ public class CustomerController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "This endpoint for update customer")
     @PutMapping("/update/{customerId}")
     public ResponseEntity<ApiResponse<CustomerResponseDto>> updateCustomer(@Valid @PathVariable int customerId,
             @RequestBody CustomerRequestDto c) {
@@ -73,14 +85,16 @@ public class CustomerController {
     // }
 
     // If we want to give NO_CONTENT there is no body with this.
+    @Operation(summary = "This endpoint for delete customer")
     @DeleteMapping("/delete/{customerId}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable int customerId) {
         service.deleteCustomer(customerId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/bycontact/{contact}")
-    public ResponseEntity<ApiResponse<CustomerResponseDto>> getByContact(@PathVariable int contact) {
+    @Operation(summary = "This endpoint for get customer using contact")
+    @GetMapping("/get/bycontact/{contact}")
+    public ResponseEntity<ApiResponse<CustomerResponseDto>> getByContact(@PathVariable String contact) {
         CustomerResponseDto customer = service.getCustomerByContact(contact);
         ApiResponse<CustomerResponseDto> response = new ApiResponse<CustomerResponseDto>(HttpStatus.OK.value(),
                 "Customer fetched", customer);

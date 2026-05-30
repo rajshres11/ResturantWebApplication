@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,14 @@ import com.project.foms.dto.resturantdto.ResturantRequestDto;
 import com.project.foms.dto.resturantdto.ResturantResponseDto;
 import com.project.foms.service.resturantService.ResturantService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(
+    name = "Resturant APIs",
+    description = "Operation related to resturant"
+)
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/resturant")
 public class ResturantController {
@@ -28,6 +37,7 @@ public class ResturantController {
     @Autowired
     private ResturantService service;
 
+    @Operation(summary = "This endpoint for create resturant")
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<ResturantResponseDto>> createResturant(@RequestBody ResturantRequestDto r) {
         ResturantResponseDto resturant = service.createResturant(r);
@@ -36,6 +46,7 @@ public class ResturantController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "This endpoint for get all resturant")
     @GetMapping("/get/all")
     public ResponseEntity<ApiResponse<List<ResturantResponseDto>>> getAllResturant() {
         List<ResturantResponseDto> resturantList = service.getAllResturant();
@@ -44,7 +55,8 @@ public class ResturantController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/get/{resturantId}")
+    @Operation(summary = "This endpoint for get resturant by resturantId")
+    @GetMapping("/get/id/{resturantId}")
     public ResponseEntity<ApiResponse<ResturantResponseDto>> getResturantById(@PathVariable int resturantId) {
         ResturantResponseDto resturant = service.getResturantById(resturantId);
         ApiResponse<ResturantResponseDto> response = new ApiResponse<ResturantResponseDto>(HttpStatus.OK.value(),
@@ -52,6 +64,7 @@ public class ResturantController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "This endpoint for update resturant")
     @PutMapping("/update/{resturantId}")
     public ResponseEntity<ApiResponse<ResturantResponseDto>> updateResturant(@PathVariable int resturantId,
             @RequestBody ResturantRequestDto r) {
@@ -61,6 +74,7 @@ public class ResturantController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "This endpoint for delete resturant")
     @DeleteMapping("/delete/{resturantId}")
     public ResponseEntity<ApiResponse<String>> deleteResturant(@PathVariable int resturantId) {
         service.deleteResturant(resturantId);
@@ -68,6 +82,7 @@ public class ResturantController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "This endpoint for get resturants by location")
     @GetMapping("/get/location/{location}")
     public ResponseEntity<ApiResponse<List<ResturantResponseDto>>> getResturantByLocation(
             @PathVariable String location) {
@@ -77,6 +92,7 @@ public class ResturantController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "This endpoint for get resturant by resturantName")
     @GetMapping("/get/resturantName/{resturantName}")
     public ResponseEntity<ApiResponse<ResturantResponseDto>> getResturantByName(@PathVariable String resturantName) {
         ResturantResponseDto resturant = service.getResturantByName(resturantName);
@@ -85,6 +101,7 @@ public class ResturantController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "This endpoint for get menuItems for specific resturant using resturantId")
     @GetMapping("/get/menuItems/{resturantId}")
     public ResponseEntity<ApiResponse<List<MenuItemResponseDto>>> getMenuItemsByResturant(
             @PathVariable int resturantId) {
@@ -94,6 +111,7 @@ public class ResturantController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "This endpoint for get all resturants in page format")
     @GetMapping("/get/all/resturants")
     public ResponseEntity<ApiResponse<List<ResturantResponseDto>>> getResturantByPage(@RequestParam int page,
             @RequestParam int size) {

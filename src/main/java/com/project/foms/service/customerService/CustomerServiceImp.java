@@ -93,7 +93,7 @@ public class CustomerServiceImp implements CustomerService {
     }
 
     @Override
-    public CustomerResponseDto getCustomerByContact(int contact) {
+    public CustomerResponseDto getCustomerByContact(String contact) {
         CustomerResponseDto response = new CustomerResponseDto();
         Customer c = repo.findByContact(contact).orElseThrow(() -> new NoCustomerException());
         ;

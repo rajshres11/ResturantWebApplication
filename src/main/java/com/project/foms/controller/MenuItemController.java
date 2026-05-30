@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +20,15 @@ import com.project.foms.dto.menuItemdto.MenuItemRequestDto;
 import com.project.foms.dto.menuItemdto.MenuItemResponseDto;
 import com.project.foms.service.menuItemService.MenuItemService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(
+    name = "MenuItem APIs",
+    description = "Operation related to MenuItem"
+)
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/menuitem")
 public class MenuItemController {
@@ -31,6 +39,7 @@ public class MenuItemController {
         this.service = service;
     }
 
+    @Operation(summary = "This endpoint to create menuItem")
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<MenuItemResponseDto>> createMenuItem(@Valid @RequestBody MenuItemRequestDto m) {
         MenuItemResponseDto menuItem = service.createMenuItem(m);
@@ -39,6 +48,7 @@ public class MenuItemController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "This endpoint to get all menuItems")
     @GetMapping("/get/all")
     public ResponseEntity<ApiResponse<List<MenuItemResponseDto>>> getAllMenuItem() {
         List<MenuItemResponseDto> menuItems = service.getAllMenuItems();
@@ -47,6 +57,7 @@ public class MenuItemController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "This endpoint to get menuItems using itemId")
     @GetMapping("/get/id/{itemId}")
     public ResponseEntity<ApiResponse<MenuItemResponseDto>> getMenuItemById(@PathVariable int itemId) {
         MenuItemResponseDto menuIem = service.getMenuItemsById(itemId);
@@ -55,15 +66,17 @@ public class MenuItemController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "This endpoint for update menuItem")
     @PutMapping("/update/{itemId}")
     public ResponseEntity<ApiResponse<MenuItemResponseDto>> updateMenuItem(@Valid @PathVariable int itemId,
             @RequestBody MenuItemRequestDto m) {
         MenuItemResponseDto menuItem = service.updateMenuItem(itemId, m);
         return new ResponseEntity<>(
-                new ApiResponse<MenuItemResponseDto>(HttpStatus.OK.value(), "MenuItem fetched sussesfully", menuItem),
+                new ApiResponse<MenuItemResponseDto>(HttpStatus.OK.value(), "MenuItem updated sussesfully", menuItem),
                 HttpStatus.OK);
     }
 
+    @Operation(summary = "This endpoint to delete menuItem")
     @DeleteMapping("/delete/{itemId}")
     public ResponseEntity<ApiResponse<String>> deleteMenuItem(@PathVariable int itemId) {
         service.deleteMenuItem(itemId);
@@ -72,6 +85,7 @@ public class MenuItemController {
 
     }
 
+    @Operation(summary = "This endpoint for get menuItems by minimum price")
     @GetMapping("/get/price")
     // GET /menuitems/get/price?price=200
     public ResponseEntity<ApiResponse<List<MenuItemResponseDto>>> findItemGreaterThan(@RequestParam int price) {
@@ -80,6 +94,7 @@ public class MenuItemController {
                 "MenuItem list greater than price", menuItems), HttpStatus.OK);
     }
 
+    @Operation(summary = "This endpoint to get menuItem using itemName")
     @GetMapping("/get/name/{itemName}")
     public ResponseEntity<ApiResponse<MenuItemResponseDto>> getMenuItemByName(@PathVariable String itemName) {
         MenuItemResponseDto menuItem = service.getByItemName(itemName);

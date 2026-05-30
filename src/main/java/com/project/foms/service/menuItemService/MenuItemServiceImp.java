@@ -8,32 +8,72 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.project.foms.controller.ResturantController;
 import com.project.foms.dto.menuItemdto.MenuItemRequestDto;
 import com.project.foms.dto.menuItemdto.MenuItemResponseDto;
 import com.project.foms.entity.MenuItem;
+import com.project.foms.entity.Resturant;
 import com.project.foms.repository.MenuItemRepository;
+import com.project.foms.repository.ResturantRepository;
 
 @Service
 public class MenuItemServiceImp implements MenuItemService {
 
-    @Autowired
     private MenuItemRepository repo;
+    private ResturantRepository resturantRepository;
+
+    public MenuItemServiceImp(
+            MenuItemRepository repo,
+            ResturantRepository resturantRepository) {
+
+        this.repo = repo;
+        this.resturantRepository = resturantRepository;
+    }
 
     @Override
     public MenuItemResponseDto createMenuItem(MenuItemRequestDto m) {
+
+        Resturant resturant = resturantRepository
+                .findById(m.getResturantId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "No such resturant"));
+
         MenuItem menuItem = new MenuItem();
+
         menuItem.setItemName(m.getItemName());
         menuItem.setPrice(m.getPrice());
         menuItem.setAvailability(m.isAvailability());
+
+        // IMPORTANT
+        menuItem.setResturant(resturant);
+
         MenuItem saved = repo.save(menuItem);
 
         MenuItemResponseDto response = new MenuItemResponseDto();
+
         response.setItemId(saved.getItemId());
         response.setItmeName(saved.getItemName());
         response.setPrice(saved.getPrice());
         response.setAvailability(saved.isAvailability());
+
         return response;
     }
+    // @Override
+    // public MenuItemResponseDto createMenuItem(MenuItemRequestDto m) {
+    // MenuItem menuItem = new MenuItem();
+    // menuItem.setItemName(m.getItemName());
+    // menuItem.setPrice(m.getPrice());
+    // menuItem.setAvailability(m.isAvailability());
+    // MenuItem saved = repo.save(menuItem);
+
+    // MenuItemResponseDto response = new MenuItemResponseDto();
+    // response.setItemId(saved.getItemId());
+    // response.setItmeName(saved.getItemName());
+    // response.setPrice(saved.getPrice());
+    // response.setAvailability(saved.isAvailability());
+    // return response;
+    // }
 
     @Override
     public List<MenuItemResponseDto> getAllMenuItems() {
@@ -66,9 +106,15 @@ public class MenuItemServiceImp implements MenuItemService {
     public MenuItemResponseDto updateMenuItem(int itemId, MenuItemRequestDto m) {
         MenuItem existing = repo.findById(itemId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found"));
+        Resturant resturant = resturantRepository
+                .findById(m.getResturantId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "No such resturant"));
         existing.setItemName(m.getItemName());
         existing.setPrice(m.getPrice());
         existing.setAvailability(m.isAvailability());
+        existing.setResturant(resturant);
         MenuItem saved = repo.save(existing);
 
         MenuItemResponseDto respone = new MenuItemResponseDto();

@@ -4,25 +4,25 @@ import java.util.List;
 
 import com.project.foms.dto.orderItemdto.OrderItemRequestDto;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public class OrderRequestDto {
 
     @NotNull(message = "Customer Id is required")
-    private int CustomerId;
+    private Integer customerId;
 
+    @Valid
     @NotEmpty(message = "Order must have atleast one item")
     private List<OrderItemRequestDto> items;
 
-    // Getter and Setter
-
-    public int getCustomerId() {
-        return CustomerId;
+    public Integer getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerId(int customerId) {
-        CustomerId = customerId;
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 
     public List<OrderItemRequestDto> getItems() {
@@ -32,5 +32,4 @@ public class OrderRequestDto {
     public void setItems(List<OrderItemRequestDto> items) {
         this.items = items;
     }
-
 }

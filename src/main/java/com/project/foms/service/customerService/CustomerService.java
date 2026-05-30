@@ -17,5 +17,5 @@ public interface CustomerService {
 
     public void deleteCustomer(int customerId);
 
-    public CustomerResponseDto getCustomerByContact(int contact);
+    public CustomerResponseDto getCustomerByContact(String contact);
 }

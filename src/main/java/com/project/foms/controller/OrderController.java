@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.project.foms.dto.ApiResponse;
 import com.project.foms.dto.orderdto.OrderRequestDto;
@@ -20,9 +22,16 @@ import com.project.foms.dto.orderdto.OrderStatusDto;
 import com.project.foms.enums.OrderStatus;
 import com.project.foms.service.orderService.OrderService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+
+@Tag(
+    name = "Order APIs",
+    description = "Operation reletaed to order"
+)
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/order")
 public class OrderController {
@@ -33,6 +42,8 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+
+    @Operation(summary = "This endpoint for save the order")
     @PostMapping("/save")
     public ResponseEntity<ApiResponse<OrderResponseDto>> placeOrder(@Valid @RequestBody OrderRequestDto o){
         OrderResponseDto order = orderService.placeOrder(o);
@@ -40,6 +51,7 @@ public class OrderController {
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
 
+    @Operation(summary = "This endpoint to get all order")
     @GetMapping("/getall")
     public ResponseEntity<ApiResponse<List<OrderResponseDto>>> getAll(){
         List<OrderResponseDto> orderList = orderService.getAllOrders();
@@ -47,6 +59,7 @@ public class OrderController {
         return new ResponseEntity<>(response,HttpStatus.FOUND);
     }
     
+    @Operation(summary = "This endpoint to get order by using orderId")
     @GetMapping("/get/orderId/{orderId}")
     public ResponseEntity<ApiResponse<OrderResponseDto>> getById(@PathVariable int orderId){
         OrderResponseDto order = orderService.getById(orderId);
@@ -54,6 +67,7 @@ public class OrderController {
         return new ResponseEntity<>(response,HttpStatus.FOUND);
     }
 
+    @Operation(summary = "This endpoint to get all order for specific customer using customerId")
     @GetMapping("/getall/customerId/{customerId}")
     public ResponseEntity<ApiResponse<List<OrderResponseDto>>> getAllOrderByCustomerId(@PathVariable int customerId){
         List<OrderResponseDto> orderList = orderService.getAllOrderByCustomer(customerId);
@@ -61,6 +75,7 @@ public class OrderController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
+    @Operation(summary = "This endpoint for update order")
     @PutMapping("/update/{orderId}")
     public ResponseEntity<ApiResponse<OrderResponseDto>> updateOrderStatus(@PathVariable int orderId,@RequestBody OrderStatusDto o){
         OrderResponseDto order = orderService.updateOrderStatus(orderId, o);
@@ -68,6 +83,7 @@ public class OrderController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
+    @Operation(summary = "This endpoint for cancel order")
     @PutMapping("/cancelOrder/{orderId}")
     public ResponseEntity<ApiResponse<OrderResponseDto>> cancelOrder(@PathVariable int orderId){
         OrderResponseDto order = orderService.cancelOrder(orderId);
@@ -75,6 +91,7 @@ public class OrderController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
+    @Operation(summary = "This endpoint for get orders by status")
     @GetMapping("/getOrderBy/status/{status}")
     public ResponseEntity<ApiResponse<List<OrderResponseDto>>> getOrderByStatus(@PathVariable OrderStatus status){
         List<OrderResponseDto> orderList = orderService.getOrderByStatus(status);
@@ -82,6 +99,7 @@ public class OrderController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
    
+    @Operation(summary = "This endpoint for get orders by date")
     @GetMapping("/getOrdersBy/time/{localDateTime}")
     public ResponseEntity<ApiResponse<List<OrderResponseDto>>>  getOrderByDate(@PathVariable LocalDateTime localDateTime){
         List<OrderResponseDto> orderList = orderService.getOrderByDate(localDateTime);
@@ -89,6 +107,7 @@ public class OrderController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
+    @Operation(summary = "This endpoint for get order by amount range")
     @GetMapping("/getOrdersBy/amount")
     public ResponseEntity<ApiResponse<List<OrderResponseDto>>>  getOrderByTotalAmount(@RequestParam int minAmount,@RequestParam int maxAmount){
         List<OrderResponseDto> orderList = orderService.getOrderByTotalAmount(minAmount, maxAmount);
@@ -96,6 +115,7 @@ public class OrderController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
+    @Operation(summary = "This endpoint for get order for resturant using resturnatId")
     @GetMapping("/getOrdersBy/resturant/{resturantId}")
     public ResponseEntity<ApiResponse<List<OrderResponseDto>>>  getOrdersByResturant(@PathVariable int resturantId){
         List<OrderResponseDto> orderList = orderService.getOrdersByResturant(resturantId);
