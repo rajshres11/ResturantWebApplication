@@ -1,0 +1,7 @@
+services:
+
+* type: web
+  name: RestaurantWebApplication
+  runtime: java
+  buildCommand: "./mvnw clean package"
+  startCommand: "java -jar target/*.jar"
